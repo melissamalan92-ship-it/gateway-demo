@@ -21,7 +21,7 @@ A reusable starter for Melva client websites: **Astro** (static site) + **Decap 
 
 ## Brand
 
-Colours and fonts are CSS variables at the top of `src/styles/global.css` (`--brand`, `--accent`, `--ink`, `--paper`...). Fonts: Fraunces (headings) and Inter (text), self-hosted via Fontsource. The "G" logo mark and favicon are placeholders until Gateway's real logo is supplied.
+Colours and fonts are CSS variables at the top of `src/styles/global.css` (`--ink`, `--paper`, `--brand`, `--accent`, `--font-display`, `--font-serif`...). **Currently styled like melva.studio as a test** (2026-11-10): cream `#fff7ee`, brown `#442411`, slate blue `#6d8eb3`, periwinkle `#6887f4`; big bold uppercase Helvetica headings, Times for names and titles, square corners, and no pill buttons (calls to action are plain bold text with an arrow). The first placeholder look (teal and sand, Fraunces + Inter) is in git history (commit `867b3dc`). Blog covers are always cropped to 16:9 so any upload looks consistent. Logo and favicon are placeholders until Gateway's real logo is supplied.
 
 ## Placeholders to replace
 

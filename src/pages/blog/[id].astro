@@ -51,9 +51,11 @@ const jsonLd = {
   h1 {
     font-size: clamp(2.2rem, 5vw, 3.4rem);
   }
+  /* Every cover is the same wide shape, whatever was uploaded. */
   .cover {
-    border-radius: var(--radius);
     margin: 2rem 0;
     width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
   }
 </style>

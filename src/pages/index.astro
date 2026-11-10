@@ -131,7 +131,7 @@ const jsonLd = {
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: linear-gradient(180deg, rgba(22, 38, 58, 0.15) 20%, rgba(22, 38, 58, 0.85));
+    background: linear-gradient(180deg, rgba(68, 36, 17, 0.2) 20%, rgba(47, 25, 12, 0.88));
   }
   .hero-text {
     padding-block: 4rem;
@@ -140,14 +140,11 @@ const jsonLd = {
     max-width: 14ch;
   }
   .light {
-    color: #e9edf2;
-  }
-  .eyebrow.light {
-    color: var(--accent);
+    color: var(--paper);
   }
   .actions {
     display: flex;
-    gap: 0.75rem;
+    gap: 2rem;
     flex-wrap: wrap;
     margin-top: 1.5rem;
   }
@@ -155,8 +152,11 @@ const jsonLd = {
     margin-top: 2rem;
   }
   .perk {
-    border-top: 3px solid var(--brand);
+    border-top: 1px solid var(--line);
     padding-top: 1rem;
+  }
+  .perk h3 {
+    font-size: 1.9rem;
   }
   .head {
     display: flex;
@@ -181,14 +181,18 @@ const jsonLd = {
     margin: 1rem 0 1.5rem;
   }
   .chips li {
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    padding: 0.45rem 1rem;
-    font-weight: 500;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.95rem;
+  }
+  .chips li:not(:last-child)::after {
+    content: "·";
+    margin-left: 0.6rem;
+    opacity: 0.6;
   }
   .cta {
-    background: var(--brand);
+    background: var(--accent);
     color: var(--paper);
   }
 </style>

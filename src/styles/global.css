@@ -1,20 +1,20 @@
-@import "@fontsource-variable/inter";
-@import "@fontsource-variable/fraunces";
-
-/* Brand tokens: change these to rebrand the whole site. */
+/* Brand tokens: change these to rebrand the whole site.
+   Current look: Melva Studio (melva.studio) palette and type, as a test. */
 :root {
-  --ink: #16263a;
-  --ink-soft: #3d4e63;
-  --paper: #fbf8f3;
-  --paper-2: #f2ece2;
-  --brand: #1f5f68;
-  --brand-dark: #164950;
-  --accent: #e2a03f;
-  --line: #dfd6c8;
+  --ink: #442411; /* brown: text on cream */
+  --ink-soft: #6b4a36;
+  --paper: #fff7ee; /* cream: page background */
+  --paper-2: #f6eadb;
+  --brand: #442411;
+  --brand-dark: #2f190c;
+  --accent: #6d8eb3; /* slate blue */
+  --accent-2: #6887f4; /* periwinkle */
+  --line: #e4d4c1;
   --white: #ffffff;
-  --radius: 14px;
-  --font-body: "Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: "Fraunces Variable", Georgia, serif;
+  --radius: 0px;
+  --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif: "Times New Roman", Times, serif;
   --wrap: 1180px;
 }
 
@@ -44,29 +44,35 @@ img {
 }
 
 a {
-  color: var(--brand);
+  color: inherit;
 }
 
+/* Big bold uppercase headings, like the Melva site */
 h1,
-h2,
-h3 {
+h2 {
   font-family: var(--font-display);
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.01em;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
   margin: 0 0 0.5em;
 }
 
 h1 {
-  font-size: clamp(2.4rem, 6vw, 4.25rem);
+  font-size: clamp(2.6rem, 7vw, 5.5rem);
 }
 
 h2 {
-  font-size: clamp(1.8rem, 4vw, 2.75rem);
+  font-size: clamp(2rem, 5vw, 3.75rem);
 }
 
+/* Names and titles in the serif, like project names on Melva */
 h3 {
-  font-size: 1.35rem;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 1.15;
+  margin: 0 0 0.5em;
 }
 
 p {
@@ -83,52 +89,56 @@ p {
 }
 
 .section.alt {
-  background: var(--paper-2);
+  background: var(--brand);
+  color: var(--paper);
 }
 
-.eyebrow {
-  font-size: 0.8rem;
-  font-weight: 650;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--brand);
-  margin-bottom: 0.75rem;
-}
-
-.lede {
-  font-size: 1.2rem;
-  color: var(--ink-soft);
-  max-width: 40rem;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.85rem 1.35rem;
-  border-radius: 999px;
-  font-weight: 600;
-  text-decoration: none;
-  border: 2px solid transparent;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-
-.btn-primary {
-  background: var(--accent);
+.section.alt .card {
   color: var(--ink);
 }
 
-.btn-primary:hover {
-  background: #d18f2e;
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.9rem;
+  opacity: 0.75;
 }
 
-.btn-ghost {
-  border-color: currentColor;
+.lede {
+  font-size: 1.15rem;
+  max-width: 40rem;
+  opacity: 0.85;
+}
+
+/* No pill buttons: plain bold text with an arrow, like the Melva links */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-decoration: none;
+  background: none;
+  border: 0;
   color: inherit;
+  transition: opacity 0.15s;
 }
 
-.btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.12);
+.btn::after {
+  content: "→";
+}
+
+.btn:hover {
+  opacity: 0.65;
+}
+
+.btn-primary,
+.btn-ghost {
+  background: none;
+  color: inherit;
 }
 
 .grid {
@@ -141,24 +151,22 @@ p {
 }
 
 .card {
-  background: var(--white);
+  background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: var(--radius);
   overflow: hidden;
   text-decoration: none;
   color: inherit;
   display: flex;
   flex-direction: column;
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition: opacity 0.15s;
 }
 
 a.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(22, 38, 58, 0.1);
+  opacity: 0.85;
 }
 
 .card img {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
   width: 100%;
 }
@@ -172,7 +180,7 @@ a.card:hover {
 }
 
 .muted {
-  color: var(--ink-soft);
+  opacity: 0.8;
 }
 
 .small {
@@ -184,13 +192,16 @@ a.card:hover {
 }
 
 .prose h2 {
-  font-size: 1.75rem;
+  font-size: 1.9rem;
   margin-top: 2rem;
 }
 
 .prose img {
-  border-radius: var(--radius);
   margin-block: 1.5rem;
+}
+
+.prose a {
+  text-decoration: underline;
 }
 
 .prose ul {
@@ -210,11 +221,11 @@ a.card:hover {
   left: 1rem;
   top: 1rem;
   z-index: 100;
-  background: var(--white);
+  background: var(--paper);
   padding: 0.5rem 1rem;
 }
 
 :focus-visible {
-  outline: 3px solid var(--accent);
+  outline: 3px solid var(--accent-2);
   outline-offset: 2px;
 }
