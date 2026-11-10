@@ -1,0 +1,59 @@
+---
+import { Image } from "astro:assets";
+import { render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import { getPosts } from "../../lib/content";
+import { site, formatDate } from "../../lib/site";
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  publisher: { "@type": "Organization", name: site.name },
+  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).href,
+};
+---
+
+<Base title={post.data.title} description={post.data.description} image={post.data.cover} type="article" jsonLd={jsonLd}>
+  <article class="section">
+    <div class="wrap narrow">
+      <a href="/blog/" class="back">← All news</a>
+      <p class="eyebrow">{formatDate(post.data.date)}</p>
+      <h1>{post.data.title}</h1>
+      <p class="lede">{post.data.description}</p>
+      {post.data.cover && (
+        <Image src={post.data.cover} alt={post.data.coverAlt ?? ""} widths={[600, 1000, 1400]} sizes="(min-width: 800px) 760px, 100vw" class="cover" loading="eager" />
+      )}
+      <div class="prose"><Content /></div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .narrow {
+    max-width: 760px;
+  }
+  .back {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+  }
+  .cover {
+    border-radius: var(--radius);
+    margin: 2rem 0;
+    width: 100%;
+  }
+</style>

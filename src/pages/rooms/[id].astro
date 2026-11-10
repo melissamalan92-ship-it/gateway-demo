@@ -1,0 +1,96 @@
+---
+import { Image } from "astro:assets";
+import { render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import { getRooms } from "../../lib/content";
+import { site } from "../../lib/site";
+
+export async function getStaticPaths() {
+  const rooms = await getRooms();
+  return rooms.map((room) => ({ params: { id: room.id }, props: { room } }));
+}
+
+const { room } = Astro.props;
+const { Content } = await render(room);
+const [first, ...rest] = room.data.photos;
+---
+
+<Base title={room.data.title} description={room.data.summary} image={first?.image}>
+  <section class="section">
+    <div class="wrap">
+      <a href="/rooms/" class="back">← All rooms</a>
+      <div class="layout">
+        <div class="photos">
+          {first && <Image src={first.image} alt={first.alt ?? room.data.title} widths={[600, 1000, 1400]} sizes="(min-width: 900px) 60vw, 100vw" loading="eager" />}
+          <div class="thumbs">
+            {rest.map((p) => <Image src={p.image} alt={p.alt ?? room.data.title} widths={[400, 700]} sizes="(min-width: 900px) 30vw, 50vw" />)}
+          </div>
+        </div>
+        <div class="info">
+          {room.data.building && <p class="eyebrow">{room.data.building}</p>}
+          <h1>{room.data.title}</h1>
+          <p class="lede">{room.data.summary}</p>
+          {room.data.price && <p class="price">{room.data.price}</p>}
+          {!room.data.available && <p class="full">This room type is full for now. Contact us to join the waiting list.</p>}
+          <ul class="features">{room.data.features.map((f) => <li>{f}</li>)}</ul>
+          <div class="prose"><Content /></div>
+          <a class="btn btn-primary" href={site.applyUrl}>Apply for this room</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .back {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+  .layout {
+    display: grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 900px) {
+    .layout {
+      grid-template-columns: 1.4fr 1fr;
+      align-items: start;
+    }
+  }
+  .photos img {
+    border-radius: var(--radius);
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  .thumbs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+  .price {
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+  .full {
+    color: #a33;
+    font-weight: 600;
+  }
+  .features {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .features li::before {
+    content: "✓";
+    color: var(--brand);
+    font-weight: 700;
+    margin-right: 0.6rem;
+  }
+</style>

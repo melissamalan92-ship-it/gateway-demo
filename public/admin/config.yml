@@ -1,0 +1,126 @@
+# Website editor (Decap CMS) at /admin.
+# Every "Publish" saves to GitHub (main branch); Netlify then rebuilds the site.
+backend:
+  name: git-gateway
+  branch: main
+
+# For trying the editor on your own computer without logging in:
+# run `npm run cms` in one terminal and `npm run dev` in another, then open localhost:4321/admin/
+local_backend: true
+
+site_url: /
+display_url: /
+logo_url: /favicon.svg
+
+# Default upload folder. Photos go into src/assets so Astro can resize them.
+media_folder: src/assets/uploads
+public_folder: ../../assets/uploads
+
+collections:
+  - name: blog
+    label: News posts
+    label_singular: News post
+    description: News and updates shown on the News page and the homepage.
+    folder: src/content/blog
+    create: true
+    slug: "{{slug}}"
+    media_folder: ../../assets/blog
+    public_folder: ../../assets/blog
+    sortable_fields: ["date", "title"]
+    summary: "{{title}} ({{date}})"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - label: Date
+        name: date
+        widget: datetime
+        format: "YYYY-MM-DD"
+        date_format: "D MMMM YYYY"
+        time_format: false
+      - label: Short description
+        name: description
+        widget: text
+        hint: One or two sentences. Shown on the News page and in Google results.
+      - { label: Cover photo, name: cover, widget: image, required: false }
+      - { label: Cover photo description, name: coverAlt, widget: string, required: false, hint: "What the photo shows, for people using screen readers." }
+      - { label: Post, name: body, widget: markdown }
+      - { label: Hide this post (draft), name: draft, widget: boolean, default: false, required: false }
+
+  - name: rooms
+    label: Rooms
+    label_singular: Room
+    description: Each room type has its own page.
+    folder: src/content/rooms
+    create: true
+    slug: "{{slug}}"
+    media_folder: ../../assets/rooms
+    public_folder: ../../assets/rooms
+    sortable_fields: ["order", "title"]
+    fields:
+      - { label: Room name, name: title, widget: string }
+      - { label: Order on the page, name: order, widget: number, value_type: int, default: 10, hint: "1 shows first." }
+      - { label: Building, name: building, widget: string, required: false }
+      - { label: Sleeps, name: sleeps, widget: number, value_type: int, required: false }
+      - { label: Summary, name: summary, widget: text, hint: "One sentence, shown on the rooms list." }
+      - { label: Price, name: price, widget: string, required: false, hint: "Leave empty to hide, e.g. 'From R4,500 a month'." }
+      - { label: Available, name: available, widget: boolean, default: true, hint: "Switch off to show 'Full for now'." }
+      - label: What's included
+        name: features
+        widget: list
+        field: { label: Item, name: item, widget: string }
+      - label: Photos
+        name: photos
+        widget: list
+        summary: "{{fields.alt}}"
+        fields:
+          - { label: Photo, name: image, widget: image }
+          - { label: Photo description, name: alt, widget: string, required: false }
+      - { label: More about this room, name: body, widget: markdown, required: false }
+
+  - name: settings
+    label: Site settings
+    editor: { preview: false }
+    files:
+      - name: site
+        label: Contact details and homepage
+        file: src/data/site.json
+        media_folder: ../assets/site
+        public_folder: ../assets/site
+        fields:
+          - { label: Business name, name: name, widget: string }
+          - { label: Short name, name: shortName, widget: string }
+          - { label: Tagline, name: tagline, widget: string }
+          - { label: Description for Google, name: description, widget: text }
+          - { label: Demo mode (hide from Google), name: demoMode, widget: boolean, hint: "Switch OFF when the site goes live." }
+          - label: Homepage banner
+            name: hero
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Text, name: text, widget: text }
+              - { label: Photo, name: image, widget: image }
+          - label: What's included (homepage)
+            name: perks
+            widget: list
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Text, name: text, widget: text }
+          - label: Students from
+            name: institutions
+            widget: list
+            field: { label: Name, name: name, widget: string }
+          - { label: Apply link, name: applyUrl, widget: string }
+          - label: Contact
+            name: contact
+            widget: object
+            fields:
+              - { label: Email, name: email, widget: string }
+              - { label: Phone, name: phone, widget: string }
+              - { label: WhatsApp number, name: whatsapp, widget: string, required: false, hint: "With country code, e.g. 27821234567. Leave empty to hide." }
+              - { label: Address, name: address, widget: string }
+              - { label: Google Maps link, name: mapUrl, widget: string }
+          - label: Social links
+            name: social
+            widget: object
+            fields:
+              - { label: Facebook, name: facebook, widget: string, required: false }
+              - { label: Instagram, name: instagram, widget: string, required: false }

@@ -1,0 +1,118 @@
+---
+import Base from "../layouts/Base.astro";
+import { site, telHref, whatsappHref } from "../lib/site";
+---
+
+<Base title="Contact" description={`Contact ${site.name}: call, email or send us a message. Parents and students welcome.`}>
+  <section class="section">
+    <div class="wrap layout">
+      <div>
+        <p class="eyebrow">Contact</p>
+        <h1>Talk to us</h1>
+        <p class="lede">Questions about rooms, NSFAS or the shuttle? Students and parents are welcome to get in touch.</p>
+        <dl>
+          <dt>Phone</dt>
+          <dd><a href={telHref(site.contact.phone)}>{site.contact.phone}</a></dd>
+          {site.contact.whatsapp && (
+            <>
+              <dt>WhatsApp</dt>
+              <dd><a href={whatsappHref(site.contact.whatsapp)}>Message us on WhatsApp</a></dd>
+            </>
+          )}
+          <dt>Email</dt>
+          <dd><a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></dd>
+          <dt>Address</dt>
+          <dd><a href={site.contact.mapUrl}>{site.contact.address}</a></dd>
+        </dl>
+      </div>
+
+      <!-- Netlify Forms: Netlify finds this form at deploy time and emails each message. -->
+      <form name="contact" method="POST" action="/thanks/" data-netlify="true" netlify-honeypot="company" class="form">
+        <input type="hidden" name="form-name" value="contact" />
+        <p class="hidden"><label>Leave this empty <input name="company" /></label></p>
+        <label>Name <input name="name" required autocomplete="name" /></label>
+        <label>Email <input name="email" type="email" required autocomplete="email" /></label>
+        <label>Phone (optional) <input name="phone" type="tel" autocomplete="tel" /></label>
+        <label>I am a
+          <select name="who">
+            <option>Student</option>
+            <option>Parent or guardian</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label>Message <textarea name="message" rows="5" required></textarea></label>
+        <label class="consent"><input type="checkbox" name="consent" required /> I agree to {site.shortName} using my details to reply to me.</label>
+        <button class="btn btn-primary" type="submit">Send message</button>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .layout {
+    display: grid;
+    gap: 3rem;
+  }
+  @media (min-width: 900px) {
+    .layout {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  dl {
+    margin: 2rem 0 0;
+  }
+  dt {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+  }
+  dd {
+    margin: 0 0 1.25rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+  .form {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    display: grid;
+    gap: 1rem;
+    align-self: start;
+  }
+  label {
+    display: grid;
+    gap: 0.35rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  input,
+  select,
+  textarea {
+    font: inherit;
+    font-weight: 400;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--paper);
+  }
+  .consent {
+    display: flex;
+    gap: 0.6rem;
+    font-weight: 400;
+    align-items: start;
+  }
+  .consent input {
+    margin-top: 0.3rem;
+  }
+  .hidden {
+    display: none;
+  }
+  button {
+    justify-self: start;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+  }
+</style>

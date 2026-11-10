@@ -1,0 +1,25 @@
+---
+import Base from "../../layouts/Base.astro";
+import RoomCard from "../../components/RoomCard.astro";
+import { getRooms } from "../../lib/content";
+import { site } from "../../lib/site";
+
+const rooms = await getRooms();
+---
+
+<Base title="Rooms" description={`Every room type at ${site.name}: fully furnished, NSFAS accredited, with free electricity and water.`}>
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">Rooms</p>
+      <h1>Find your room</h1>
+      <p class="lede">Every room is fully furnished and NSFAS accredited by both UJ and Wits, with free electricity, water and shuttle.</p>
+      <div class="grid grid-3 list">{rooms.map((room) => <RoomCard room={room} />)}</div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .list {
+    margin-top: 2.5rem;
+  }
+</style>

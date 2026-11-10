@@ -1,0 +1,194 @@
+---
+import { Image } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import RoomCard from "../components/RoomCard.astro";
+import PostCard from "../components/PostCard.astro";
+import { site, assetImage, telHref } from "../lib/site";
+import { getPosts, getRooms } from "../lib/content";
+
+const rooms = (await getRooms()).slice(0, 3);
+const posts = (await getPosts()).slice(0, 3);
+const hero = assetImage(site.hero.image);
+
+// Business details for Google (shown in search results and Maps).
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LodgingBusiness",
+  name: site.name,
+  description: site.description,
+  url: Astro.site?.href,
+  telephone: site.contact.phone,
+  email: site.contact.email,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "30 Claim Street",
+    addressLocality: "Doornfontein, Johannesburg",
+    addressRegion: "Gauteng",
+    addressCountry: "ZA",
+  },
+  sameAs: Object.values(site.social).filter(Boolean),
+};
+---
+
+<Base jsonLd={jsonLd}>
+  <section class="hero">
+    {hero && <Image src={hero} alt="" class="hero-img" widths={[800, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" />}
+    <div class="wrap hero-text">
+      <p class="eyebrow light">NSFAS accredited · Wits & UJ</p>
+      <h1>{site.hero.heading}</h1>
+      <p class="lede light">{site.hero.text}</p>
+      <div class="actions">
+        <a class="btn btn-primary" href={site.applyUrl}>Apply now</a>
+        <a class="btn btn-ghost" href="/rooms/">See the rooms</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="living">
+    <div class="wrap">
+      <p class="eyebrow">Living here</p>
+      <h2>More than a room</h2>
+      <p class="lede">Everything below is included for every Gateway resident.</p>
+      <div class="grid grid-3 perks">
+        {site.perks.map((p) => (
+          <div class="perk">
+            <h3>{p.title}</h3>
+            <p class="muted">{p.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="eyebrow">Rooms</p>
+          <h2>Find your room</h2>
+        </div>
+        <a href="/rooms/">All rooms →</a>
+      </div>
+      <div class="grid grid-3">{rooms.map((room) => <RoomCard room={room} />)}</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">Who stays with us</p>
+      <h2>Students from</h2>
+      <ul class="chips">{site.institutions.map((i) => <li>{i}</li>)}</ul>
+      <p class="muted">We welcome NSFAS-funded, bursary and cash-paying students.</p>
+    </div>
+  </section>
+
+  {posts.length > 0 && (
+    <section class="section alt">
+      <div class="wrap">
+        <div class="head">
+          <div>
+            <p class="eyebrow">News</p>
+            <h2>Latest from Gateway</h2>
+          </div>
+          <a href="/blog/">All news →</a>
+        </div>
+        <div class="grid grid-3">{posts.map((post) => <PostCard post={post} />)}</div>
+      </div>
+    </section>
+  )}
+
+  <section class="section cta">
+    <div class="wrap">
+      <h2>Ready to move in?</h2>
+      <p class="lede light">Apply online, or talk to us first. We're happy to answer questions from students and parents.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href={site.applyUrl}>Apply now</a>
+        <a class="btn btn-ghost" href={telHref(site.contact.phone)}>Call {site.contact.phone}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: min(78vh, 720px);
+    display: grid;
+    align-items: end;
+    color: var(--paper);
+    isolation: isolate;
+  }
+  .hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(180deg, rgba(22, 38, 58, 0.15) 20%, rgba(22, 38, 58, 0.85));
+  }
+  .hero-text {
+    padding-block: 4rem;
+  }
+  .hero h1 {
+    max-width: 14ch;
+  }
+  .light {
+    color: #e9edf2;
+  }
+  .eyebrow.light {
+    color: var(--accent);
+  }
+  .actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+  .perks {
+    margin-top: 2rem;
+  }
+  .perk {
+    border-top: 3px solid var(--brand);
+    padding-top: 1rem;
+  }
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  .head h2 {
+    margin: 0;
+  }
+  .head a {
+    font-weight: 600;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 1.5rem;
+  }
+  .chips li {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.45rem 1rem;
+    font-weight: 500;
+  }
+  .cta {
+    background: var(--brand);
+    color: var(--paper);
+  }
+</style>

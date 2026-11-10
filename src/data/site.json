@@ -1,0 +1,33 @@
+{
+  "name": "Gateway Student Accommodation",
+  "shortName": "Gateway",
+  "tagline": "Your home away from home",
+  "description": "NSFAS-accredited student accommodation in Doornfontein, Johannesburg, for Wits, UJ and nearby colleges. Fully furnished rooms with free electricity, water and a free campus shuttle.",
+  "demoMode": true,
+  "hero": {
+    "heading": "Student living, sorted.",
+    "text": "Fully furnished, NSFAS-accredited rooms in Doornfontein, with free electricity, free water and our own shuttle to campus.",
+    "image": "../assets/site/hero.jpg"
+  },
+  "perks": [
+    { "title": "Free electricity", "text": "Municipal electricity is included. No prepaid meters, no surprises." },
+    { "title": "Free water", "text": "Municipal water is included in every room." },
+    { "title": "Free shuttle", "text": "Our own bus runs Monday to Friday, every hour from 7am to 9pm." },
+    { "title": "Fully furnished", "text": "Every room comes ready to move into, so you only bring your things." },
+    { "title": "NSFAS accredited", "text": "Accredited by both UJ and Wits. We also welcome bursary and cash-paying students." },
+    { "title": "Secure", "text": "Controlled access and security around the clock, so you can focus on your studies." }
+  ],
+  "institutions": ["Wits", "UJ", "Rosebank College", "AFDA", "Mediclinic Higher Education", "Other nearby colleges"],
+  "applyUrl": "https://gatewayres.co.za/booking-page/",
+  "contact": {
+    "email": "info@gatewayres.co.za",
+    "phone": "+27 11 720 0911",
+    "whatsapp": "",
+    "address": "30 Claim Street, Doornfontein, Johannesburg, Gauteng",
+    "mapUrl": "https://maps.google.com/?q=30+Claim+Street+Doornfontein+Johannesburg"
+  },
+  "social": {
+    "facebook": "https://www.facebook.com/Gatewaystudentz/",
+    "instagram": "https://www.instagram.com/gatewayres/"
+  }
+}

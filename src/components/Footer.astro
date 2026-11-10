@@ -1,0 +1,67 @@
+---
+import { site, telHref } from "../lib/site";
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="wrap cols">
+    <div>
+      <p class="name">{site.name}</p>
+      <p>{site.tagline}</p>
+    </div>
+    <div>
+      <p class="label">Find us</p>
+      <p><a href={site.contact.mapUrl}>{site.contact.address}</a></p>
+    </div>
+    <div>
+      <p class="label">Talk to us</p>
+      <p>
+        <a href={telHref(site.contact.phone)}>{site.contact.phone}</a><br />
+        <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+      </p>
+    </div>
+    <div>
+      <p class="label">Follow</p>
+      <p>
+        {site.social.instagram && <a href={site.social.instagram}>Instagram</a>}<br />
+        {site.social.facebook && <a href={site.social.facebook}>Facebook</a>}
+      </p>
+    </div>
+  </div>
+  <div class="wrap legal">© {year} {site.name}</div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--ink);
+    color: #cfd6df;
+    padding-block: 3.5rem 2rem;
+    font-size: 0.95rem;
+  }
+  .cols {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+  .name {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--paper);
+  }
+  .label {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  a {
+    color: var(--paper);
+  }
+  .legal {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    font-size: 0.85rem;
+  }
+</style>

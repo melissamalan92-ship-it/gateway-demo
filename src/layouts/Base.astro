@@ -1,0 +1,84 @@
+---
+import "../styles/global.css";
+import { getImage } from "astro:assets";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { site, assetImage } from "../lib/site";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: ImageMetadata;
+  type?: "website" | "article";
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { title, description = site.description, image, type = "website", jsonLd } = Astro.props;
+const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | ${site.tagline}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// Link-preview image (WhatsApp, Facebook, etc.): the page's own photo, or the hero.
+const ogSource = image ?? assetImage(site.hero.image);
+const og = ogSource ? await getImage({ src: ogSource, width: 1200, format: "jpg" }) : undefined;
+const ogUrl = og ? new URL(og.src, Astro.site).href : undefined;
+
+// While this is a demo it must not appear in Google, or it would compete
+// with the client's real site. Switch off "Demo mode" in the editor at launch.
+const noindex = site.demoMode;
+---
+
+<!doctype html>
+<html lang="en-ZA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title={`${site.name} blog`} href="/rss.xml" />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_ZA" />
+    {ogUrl && <meta property="og:image" content={ogUrl} />}
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+
+    <!-- Netlify login emails (invite, password reset) land on the homepage
+         with a token after #; send them on to the editor to finish. -->
+    <script is:inline>
+      if (/(invite|recovery|confirmation|email_change)_token=/.test(location.hash)) {
+        location.replace("/admin/" + location.hash);
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    {site.demoMode && (
+      <div class="demo">Demo site: placeholder photos and content, not the live website.</div>
+    )}
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .demo {
+    background: var(--ink);
+    color: var(--paper);
+    text-align: center;
+    font-size: 0.85rem;
+    padding: 0.45rem 1rem;
+  }
+</style>

@@ -1,0 +1,38 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  room: CollectionEntry<"rooms">;
+}
+const { room } = Astro.props;
+const photo = room.data.photos[0];
+---
+
+<a class="card" href={`/rooms/${room.id}/`}>
+  {photo && (
+    <Image src={photo.image} alt={photo.alt ?? room.data.title} widths={[400, 700]} sizes="(min-width: 800px) 380px, 100vw" />
+  )}
+  <div class="card-body">
+    <h3>{room.data.title}</h3>
+    <p class="muted small">{room.data.summary}</p>
+    <p class="small meta">
+      {room.data.sleeps && <span>Sleeps {room.data.sleeps}</span>}
+      {room.data.price && <span>{room.data.price}</span>}
+      {!room.data.available && <span class="full">Full for now</span>}
+    </p>
+  </div>
+</a>
+
+<style>
+  .meta {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin: 0;
+    font-weight: 600;
+  }
+  .full {
+    color: #a33;
+  }
+</style>
